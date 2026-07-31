@@ -90,8 +90,6 @@ To test the Bedrock extraction flow locally:
 python bedrock_quickstart.py --file sample-receipts/receipt_transport_02.png --mock-on-throttle
 ```
 
-
-git commit -m "Initial public BudgetSnap repo"
 git branch -M main
 git remote add origin https://github.com/limanindou/BudgetSnap.git
 git push -u origin main
