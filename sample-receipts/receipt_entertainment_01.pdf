@@ -1,0 +1,67 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 731 >>
+stream
+BT
+/F1 11 Tf
+50 790 Td
+15 TL
+(NEON ARCADE CENTER) Tj
+T*
+(52 Harbor Ave, San Diego, CA 92101) Tj
+T*
+(Receipt #: NAC-661902) Tj
+T*
+(Date: 2026-07-29    Time: 20:16) Tj
+T*
+(--------------------------------------------------) Tj
+T*
+(Private Event Package                     $ 280.00) Tj
+T*
+(Game Card Credits                         $ 120.00) Tj
+T*
+(Food and Drinks Bundle                    $  60.00) Tj
+T*
+(--------------------------------------------------) Tj
+T*
+(Subtotal                                  $ 460.00) Tj
+T*
+(Tax                                       $  40.00) Tj
+T*
+(TOTAL                                     $ 500.00) Tj
+T*
+(Payment: AMEX **** 4022) Tj
+T*
+(Cashier: Mateo) Tj
+T*
+(Thank you for visiting.) Tj
+T*
+ET
+
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001023 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1091
+%%EOF

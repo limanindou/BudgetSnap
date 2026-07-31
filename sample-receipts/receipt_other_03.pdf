@@ -1,0 +1,65 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 703 >>
+stream
+BT
+/F1 11 Tf
+50 790 Td
+15 TL
+(HOME GOODS DEPOT) Tj
+T*
+(909 Market Street, Austin, TX 78701) Tj
+T*
+(Receipt #: HGD-118403) Tj
+T*
+(Date: 2026-07-27    Time: 13:04) Tj
+T*
+(--------------------------------------------------) Tj
+T*
+(Storage Bins \\(2\\)                          $  22.00) Tj
+T*
+(Desk Lamp                                 $  18.00) Tj
+T*
+(AA Batteries                              $   6.50) Tj
+T*
+(--------------------------------------------------) Tj
+T*
+(Subtotal                                  $  46.50) Tj
+T*
+(Tax                                       $   3.84) Tj
+T*
+(TOTAL                                     $  50.34) Tj
+T*
+(Payment: VISA **** 7788) Tj
+T*
+(Cashier: Jordan) Tj
+T*
+ET
+
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000995 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1063
+%%EOF

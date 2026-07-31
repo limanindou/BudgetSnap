@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BudgetSnap - snap it, track it, stay on budget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f8f4e8;
+      --paper-dim: #eee7d6;
+      --ink: #1e1d1a;
+      --ink-soft: #5d594e;
+      --line: #d4c8ab;
+      --accent: #1f5c4a;
+      --accent-soft: #dcebe4;
+      --warn: #a76912;
+      --warn-soft: #f3e8cf;
+      --danger: #a22f22;
+      --danger-soft: #f5dfdb;
+      --shadow: rgba(35, 30, 20, 0.22);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "IBM Plex Sans", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, #fff9ea 0%, transparent 36%),
+        radial-gradient(circle at 90% 15%, #f2e7cb 0%, transparent 34%),
+        linear-gradient(180deg, #efe7d3 0%, #e7dfcd 100%);
+      padding: 28px 16px 56px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .wrap {
+      width: min(920px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 22px;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px -20px var(--shadow);
+      padding: 18px;
+    }
+
+    header.panel {
+      padding: 20px;
+    }
+
+    .eyebrow {
+      font-family: "Space Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 16px;
+      height: 1px;
+      background: var(--ink-soft);
+      opacity: 0.7;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Space Mono", monospace;
+      letter-spacing: -0.02em;
+      font-size: clamp(26px, 4.2vw, 40px);
+    }
+
+    .sub {
+      margin: 10px 0 0;
+      color: var(--ink-soft);
+      max-width: 65ch;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 22px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 860px) {
+      .grid {
+        grid-template-columns: 1.2fr 1fr;
+      }
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-family: "Space Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+
+    .slot {
+      background: #1f1e1c;
+      border-radius: var(--radius);
+      padding: 14px;
+      border: 1px solid #2d2a24;
+    }
+
+    .slot-top {
+      font-family: "Space Mono", monospace;
+      color: #f5f1e8;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 10px;
+    }
+
+    .dropzone {
+      position: relative;
+      border: 1.5px dashed #6a5f4a;
+      border-radius: 6px;
+      height: 74px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      background: repeating-linear-gradient(
+        90deg,
+        #181715 0px,
+        #181715 12px,
+        #11100e 12px,
+        #11100e 15px
+      );
+    }
+
+    .dropzone:hover,
+    .dropzone.drag {
+      border-color: #f8f4e8;
+      background: repeating-linear-gradient(
+        90deg,
+        #1e1c19 0px,
+        #1e1c19 12px,
+        #151311 12px,
+        #151311 15px
+      );
+    }
+
+    .dropzone input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .drop-label {
+      pointer-events: none;
+      font-family: "Space Mono", monospace;
+      color: #f2ede2;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    .controls {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .selectors-inline {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .controls {
+        grid-template-columns: 1fr auto auto;
+      }
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 18px 12px 34px;
+      }
+
+      .panel {
+        padding: 14px;
+      }
+
+      .selectors-inline {
+        grid-template-columns: 1fr;
+      }
+
+      .drop-label {
+        font-size: 11px;
+      }
+
+      .row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .merchant {
+        font-size: 16px;
+      }
+
+      .line {
+        font-size: 13px;
+      }
+
+      .note {
+        font-size: 12px;
+      }
+
+      .budget-footer {
+        grid-template-columns: 1fr;
+      }
+
+      .budget-edit {
+        grid-template-columns: 1fr;
+      }
+
+      .budget-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      .sub {
+        font-size: 13px;
+      }
+
+      .slot {
+        padding: 10px;
+      }
+
+      .dropzone {
+        height: 68px;
+      }
+
+      button {
+        min-height: 36px;
+        padding: 7px 10px;
+      }
+    }
+
+    .field,
+    select,
+    input,
+    button {
+      font: inherit;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--ink-soft);
+      font-family: "Space Mono", monospace;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    select,
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fffdf6;
+      color: var(--ink);
+      padding: 8px 10px;
+    }
+
+    button {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px -12px var(--shadow);
+    }
+
+    .btn-main {
+      background: var(--accent);
+      color: #f6fff9;
+      border-color: #1a4c3e;
+    }
+
+    .btn-ghost {
+      background: #fffdf6;
+      color: var(--ink-soft);
+    }
+
+    .status {
+      margin-top: 12px;
+      min-height: 20px;
+      font-family: "Space Mono", monospace;
+      color: var(--ink-soft);
+      font-size: 12px;
+      letter-spacing: 0.01em;
+    }
+
+    .status.processing::after {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--warn);
+      margin-left: 8px;
+      animation: blink 1s infinite steps(1);
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .result-card {
+      background: #fffdf6;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 14px;
+      margin-top: 14px;
+      opacity: 0;
+      transform: translateY(-6px);
+      animation: in 0.35s ease forwards;
+    }
+
+    @keyframes in {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      border-bottom: 1px dashed var(--line);
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+
+    .merchant {
+      font-family: "Space Mono", monospace;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .date {
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+
+    .line {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-size: 14px;
+    }
+
+    .line span:first-child {
+      color: var(--ink-soft);
+    }
+
+    .line.total {
+      border-top: 1px dashed var(--line);
+      margin-top: 7px;
+      padding-top: 10px;
+      font-family: "Space Mono", monospace;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--ink);
+    }
+
+    .tags {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-family: "Space Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+    }
+
+    .tag.cat {
+      background: var(--paper-dim);
+      border-color: var(--line);
+      color: var(--ink-soft);
+    }
+
+    .tag.ok {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .tag.warn {
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .note {
+      margin-top: 12px;
+      border-left: 3px solid var(--warn);
+      background: var(--warn-soft);
+      border-radius: 0 4px 4px 0;
+      padding: 10px 11px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .note.over {
+      border-left-color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .note.under {
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .budget-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .budget-row {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fffdf6;
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .budget-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .budget-name {
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .budget-numbers {
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+
+    .budget-edit {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .gauge {
+      height: 7px;
+      border-radius: 999px;
+      background: var(--paper-dim);
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      border-radius: 999px;
+      width: 0;
+      transition: width 0.5s ease;
+    }
+
+    .fill.ok {
+      background: var(--accent);
+    }
+
+    .fill.warn {
+      background: var(--warn);
+    }
+
+    .fill.over {
+      background: var(--danger);
+    }
+
+    .budget-footer {
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 100px auto;
+    }
+
+    .muted {
+      color: var(--ink-soft);
+      font-size: 12px;
+    }
+
+    .empty {
+      border: 1px dashed var(--line);
+      border-radius: 6px;
+      padding: 14px;
+      color: var(--ink-soft);
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      background: #fffcf4;
+    }
+
+    footer {
+      text-align: center;
+      font-family: "Space Mono", monospace;
+      color: var(--ink-soft);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    :focus-visible {
+      outline: 2px solid #1f5c4a;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="panel">
+      <div class="eyebrow">Weekend Annoying Task Challenge</div>
+      <h1>BudgetSnap</h1>
+      <p class="sub">
+        Upload a receipt image or PDF. BudgetSnap logs it, checks your category budget, and tells you instantly if
+        you are over weekly or monthly limits.
+      </p>
+    </header>
+
+    <div class="grid">
+      <section class="panel" aria-labelledby="upload-title">
+        <h2 class="section-title" id="upload-title">Upload Receipt</h2>
+        <div class="slot">
+          <div class="slot-top">Feed a receipt</div>
+          <div class="dropzone" id="dropzone">
+            <div class="drop-label" id="dropLabel">Tap to upload or drop a photo/PDF</div>
+            <input id="fileInput" type="file" accept="image/*,.pdf,application/pdf" />
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="selectors-inline">
+            <div class="field">
+              <label for="periodSelect">Budget period</label>
+              <select id="periodSelect">
+                <option value="month" selected>Month</option>
+                <option value="week">Week</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="categoryOverride">Categories</label>
+              <select id="categoryOverride">
+                <option value="">Auto (AI)</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn-main" id="uploadBtn" type="button">Upload</button>
+          <button class="btn-ghost" id="demoBtn" type="button">Run demo</button>
+        </div>
+
+        <div class="status" id="status" aria-live="polite"></div>
+        <div id="results"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="budget-title">
+        <h2 class="section-title" id="budget-title">Set Category Budgets</h2>
+        <div class="muted">Set limits like $100 for groceries, transport, entertainment, and others.</div>
+        <div class="budget-list" id="budgetList"></div>
+
+        <div class="budget-footer">
+          <input id="newCategoryName" type="text" placeholder="new category (e.g. books)" />
+          <input id="newCategoryLimit" type="number" min="0" step="0.01" placeholder="limit" />
+          <button class="btn-ghost" id="addCategoryBtn" type="button">Add category</button>
+        </div>
+
+        <div class="controls" style="margin-top:10px; grid-template-columns: repeat(2, minmax(0, 1fr));">
+          <button class="btn-ghost" id="resetSpentBtn" type="button">Reset spent totals</button>
+          <button class="btn-ghost" id="seedDemoBtn" type="button">Seed demo data</button>
+        </div>
+      </section>
+    </div>
+
+    <footer>Built for AWS challenge - Bedrock · Lambda · DynamoDB · S3</footer>
+  </div>
+
+  <script>
+    window.BUDGETSNAP_CONFIG = {
+      // Set this to your API Gateway endpoint when ready.
+      // Example: https://xxxxx.execute-api.us-east-1.amazonaws.com/upload
+      apiUrl: ""
+    };
+  </script>
+
+  <script>
+    const API_URL = (window.BUDGETSNAP_CONFIG && window.BUDGETSNAP_CONFIG.apiUrl || "").trim();
+
+    const STORAGE_KEY = "budgetsnap.state.v1";
+
+    const defaultState = {
+      period: "month",
+      budgets: {
+        groceries: { limit: 100, spent: 0 },
+        transport: { limit: 100, spent: 0 },
+        entertainment: { limit: 100, spent: 0 },
+        other: { limit: 100, spent: 0 }
+      }
+    };
+
+    const demoReceipts = [
+      {
+        merchant: "Fresh Basket Market",
+        date: "2026-07-31",
+        amount: 48.65,
+        category: "groceries",
+        lineItems: [["Groceries - mixed items", "$48.65"]],
+        advice: "You are still under budget. Keep your next grocery run focused on essentials."
+      },
+      {
+        merchant: "City Metro Pass",
+        date: "2026-07-31",
+        amount: 67.0,
+        category: "transport",
+        lineItems: [["Weekly transit reload", "$67.00"]],
+        advice: "Transport spending is close to your limit; consider fewer ride-share trips this week."
+      },
+      {
+        merchant: "Neon Arcade",
+        date: "2026-07-31",
+        amount: 92.0,
+        category: "entertainment",
+        lineItems: [["Games and snacks", "$92.00"]],
+        advice: "You have overspent on entertainment this month. Plan one low-cost weekend activity to recover."
+      }
+    ];
+
+    const fileInput = document.getElementById("fileInput");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const demoBtn = document.getElementById("demoBtn");
+    const dropzone = document.getElementById("dropzone");
+    const dropLabel = document.getElementById("dropLabel");
+    const statusEl = document.getElementById("status");
+    const resultsEl = document.getElementById("results");
+    const periodSelect = document.getElementById("periodSelect");
+    const categoryOverrideEl = document.getElementById("categoryOverride");
+
+    const budgetListEl = document.getElementById("budgetList");
+    const newCategoryNameEl = document.getElementById("newCategoryName");
+    const newCategoryLimitEl = document.getElementById("newCategoryLimit");
+    const addCategoryBtn = document.getElementById("addCategoryBtn");
+    const resetSpentBtn = document.getElementById("resetSpentBtn");
+    const seedDemoBtn = document.getElementById("seedDemoBtn");
+
+    let demoIndex = 0;
+    let selectedFile = null;
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaultState);
+        const parsed = JSON.parse(raw);
+        const merged = {
+          period: parsed.period === "week" ? "week" : "month",
+          budgets: { ...defaultState.budgets, ...(parsed.budgets || {}) }
+        };
+
+        for (const [cat, entry] of Object.entries(merged.budgets)) {
+          merged.budgets[cat] = {
+            limit: toAmount(entry.limit),
+            spent: toAmount(entry.spent)
+          };
+        }
+
+        return merged;
+      } catch {
+        return structuredClone(defaultState);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function toAmount(value) {
+      const num = Number(value);
+      if (!Number.isFinite(num) || num < 0) return 0;
+      return Math.round(num * 100) / 100;
+    }
+
+    function money(num) {
+      return "$" + toAmount(num).toFixed(2);
+    }
+
+    function normalizeCategory(value) {
+      return String(value || "other")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-");
+    }
+
+    function categoryLabel(catKey) {
+      return catKey
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (ch) => ch.toUpperCase());
+    }
+
+    function ensureCategory(catKey) {
+      if (!state.budgets[catKey]) {
+        state.budgets[catKey] = { limit: 100, spent: 0 };
+      }
+    }
+
+    function orderedCategories() {
+      const keys = Object.keys(state.budgets);
+      return keys.sort((a, b) => {
+        if (a === "other" && b !== "other") return 1;
+        if (b === "other" && a !== "other") return -1;
+        return a.localeCompare(b);
+      });
+    }
+
+    function fillCategoryOptions() {
+      const current = categoryOverrideEl.value;
+      categoryOverrideEl.innerHTML = "<option value=\"\">Auto (AI)</option>";
+      orderedCategories().forEach((cat) => {
+          const opt = document.createElement("option");
+          opt.value = cat;
+          opt.textContent = categoryLabel(cat);
+          categoryOverrideEl.appendChild(opt);
+        });
+
+      if (current && state.budgets[current]) {
+        categoryOverrideEl.value = current;
+      }
+    }
+
+    function renderBudgets() {
+      fillCategoryOptions();
+      const cats = orderedCategories();
+      if (!cats.length) {
+        budgetListEl.innerHTML = '<div class="empty">No categories yet. Add one below.</div>';
+        return;
+      }
+
+      budgetListEl.innerHTML = "";
+      cats.forEach((cat) => {
+        const row = document.createElement("div");
+        const b = state.budgets[cat];
+        const limit = Math.max(0.01, toAmount(b.limit));
+        const spent = toAmount(b.spent);
+        const ratio = spent / limit;
+        const pct = Math.min(ratio * 100, 100);
+        const tone = ratio > 1 ? "over" : ratio > 0.8 ? "warn" : "ok";
+
+        row.className = "budget-row";
+        row.innerHTML = `
+          <div class="budget-head">
+            <div class="budget-name">${categoryLabel(cat)}</div>
+            <div class="budget-numbers">${money(spent)} / ${money(limit)}</div>
+          </div>
+          <div class="gauge"><div class="fill ${tone}" style="width:${pct}%"></div></div>
+          <div class="budget-edit">
+            <input type="number" min="0" step="0.01" value="${limit.toFixed(2)}" data-role="limit-input" data-category="${cat}" />
+            <button type="button" class="btn-ghost" data-role="remove-category" data-category="${cat}">Remove</button>
+          </div>
+        `;
+
+        budgetListEl.appendChild(row);
+      });
+    }
+
+    function setStatus(message, processing = false) {
+      statusEl.textContent = message;
+      statusEl.classList.toggle("processing", processing);
+    }
+
+    function buildAdvice({ category, spent, limit, overBudget, period, nudge }) {
+      const categoryText = categoryLabel(category).toLowerCase();
+      if (nudge) return nudge;
+
+      if (overBudget) {
+        const overBy = spent - limit;
+        return `You have overspent on ${categoryText} this ${period} by ${money(overBy)}. Consider reducing ${categoryText} for the rest of the ${period}.`;
+      }
+
+      const ratio = limit > 0 ? spent / limit : 0;
+      if (ratio > 0.8) {
+        return `${categoryLabel(category)} is close to its ${period} limit. A smaller next purchase keeps you on track.`;
+      }
+
+      return `${categoryLabel(category)} remains within your ${period} budget. Current spend is ${money(spent)} of ${money(limit)}.`;
+    }
+
+    function renderResultCard(entry) {
+      const card = document.createElement("div");
+      const toneClass = entry.overBudget ? "warn" : "ok";
+      const noteClass = entry.overBudget ? "over" : "under";
+      const budgetTag = entry.overBudget ? "Over budget" : "Within budget";
+
+      card.className = "result-card";
+      card.innerHTML = `
+        <div class="row">
+          <div class="merchant">${entry.merchant}</div>
+          <div class="date">${entry.date}</div>
+        </div>
+        ${entry.lineItems.map((line) => `<div class="line"><span>${line[0]}</span><span>${line[1]}</span></div>`).join("")}
+        <div class="line total"><span>Total</span><span>${money(entry.amount)}</span></div>
+        <div class="tags">
+          <span class="tag cat">${categoryLabel(entry.category)}</span>
+          <span class="tag ${toneClass}">${budgetTag}</span>
+          <span class="tag cat">${entry.period}</span>
+        </div>
+        <div class="note ${noteClass}">${entry.advice}</div>
+      `;
+
+      resultsEl.prepend(card);
+    }
+
+    function applyExpense(entry) {
+      ensureCategory(entry.category);
+      state.budgets[entry.category].spent = toAmount(entry.spentAfter);
+      if (entry.limit > 0) {
+        state.budgets[entry.category].limit = toAmount(entry.limit);
+      }
+      saveState();
+      renderBudgets();
+      renderResultCard(entry);
+    }
+
+    function buildDemoEntry() {
+      const base = demoReceipts[demoIndex % demoReceipts.length];
+      demoIndex += 1;
+
+      const forcedCategory = categoryOverrideEl.value;
+      const category = forcedCategory || normalizeCategory(base.category);
+      ensureCategory(category);
+
+      const budget = state.budgets[category];
+      const nextSpent = toAmount(budget.spent + base.amount);
+      const overBudget = nextSpent > budget.limit;
+
+      return {
+        merchant: base.merchant,
+        date: base.date,
+        amount: base.amount,
+        category,
+        lineItems: base.lineItems,
+        period: state.period,
+        limit: budget.limit,
+        spentAfter: nextSpent,
+        overBudget,
+        advice: buildAdvice({
+          category,
+          spent: nextSpent,
+          limit: budget.limit,
+          overBudget,
+          period: state.period,
+          nudge: base.advice
+        })
+      };
+    }
+
+    function normalizeApiResponse(payload) {
+      // Accept either a direct object or a wrapped Lambda payload.
+      const root = payload && payload.results && payload.results.length ? payload.results[0] : payload;
+      const category = normalizeCategory(root.category || root.extractedCategory || "other");
+      ensureCategory(category);
+
+      const limit = toAmount(root.budget?.limit ?? state.budgets[category].limit);
+      const spentAfter = toAmount(root.budget?.spent_after ?? (state.budgets[category].spent + toAmount(root.amount || root.total || 0)));
+      const overBudget = Boolean(root.budget?.over_budget ?? (spentAfter > limit));
+
+      return {
+        merchant: root.merchant || "Unknown Merchant",
+        date: root.date || new Date().toISOString().slice(0, 10),
+        amount: toAmount(root.amount || root.total || 0),
+        category,
+        lineItems: mapLineItems(root.line_items || root.lineItems, root.amount || root.total || 0),
+        period: root.period || state.period,
+        limit,
+        spentAfter,
+        overBudget,
+        advice: buildAdvice({
+          category,
+          spent: spentAfter,
+          limit,
+          overBudget,
+          period: root.period || state.period,
+          nudge: root.nudge || root.budgetNudge || root.advice
+        })
+      };
+    }
+
+    function mapLineItems(items, amount) {
+      if (!Array.isArray(items) || !items.length) {
+        return [["Receipt purchase", money(toAmount(amount))]];
+      }
+
+      return items.slice(0, 5).map((it) => {
+        if (Array.isArray(it) && it.length >= 2) {
+          return [String(it[0]), String(it[1])];
+        }
+
+        const name = String(it.name || "Item");
+        const lineTotal = toAmount(it.line_total ?? it.lineTotal ?? it.unit_price ?? 0);
+        return [name, money(lineTotal)];
+      });
+    }
+
+    async function processViaApi(file) {
+      const formData = new FormData();
+      formData.append("receipt", file);
+      formData.append("period", state.period);
+      if (categoryOverrideEl.value) {
+        formData.append("categoryOverride", categoryOverrideEl.value);
+      }
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+
+      return response.json();
+    }
+
+    async function submitUpload() {
+      if (!selectedFile) {
+        setStatus("Select a receipt image or PDF first.");
+        return;
+      }
+
+      setStatus("Uploading and analyzing receipt...", true);
+
+      try {
+        let entry;
+
+        if (API_URL) {
+          const apiPayload = await processViaApi(selectedFile);
+          entry = normalizeApiResponse(apiPayload);
+        } else {
+          entry = buildDemoEntry();
+        }
+
+        applyExpense(entry);
+        setStatus(`Logged ${entry.merchant} · ${money(entry.amount)} · ${categoryLabel(entry.category)}.`);
+      } catch (error) {
+        setStatus("Could not process receipt. Check API URL or try demo mode.");
+      }
+    }
+
+    function onFileChosen(file) {
+      if (!file) return;
+      selectedFile = file;
+      dropLabel.textContent = file.name;
+      setStatus("Receipt selected. Press Upload to process.");
+    }
+
+    fileInput.addEventListener("change", (event) => {
+      const file = event.target.files && event.target.files[0];
+      onFileChosen(file);
+    });
+
+    uploadBtn.addEventListener("click", submitUpload);
+
+    demoBtn.addEventListener("click", () => {
+      setStatus("Running demo receipt...", true);
+      setTimeout(() => {
+        const entry = buildDemoEntry();
+        applyExpense(entry);
+        setStatus(`Demo logged: ${entry.merchant} · ${money(entry.amount)} · ${categoryLabel(entry.category)}.`);
+      }, 500);
+    });
+
+    periodSelect.addEventListener("change", () => {
+      state.period = periodSelect.value === "week" ? "week" : "month";
+      saveState();
+      setStatus(`Budget period switched to ${state.period}.`);
+    });
+
+    addCategoryBtn.addEventListener("click", () => {
+      const rawName = newCategoryNameEl.value.trim();
+      const normalized = normalizeCategory(rawName);
+      const limit = toAmount(newCategoryLimitEl.value || 0);
+
+      if (!normalized) {
+        setStatus("Type a category name first.");
+        return;
+      }
+
+      if (state.budgets[normalized]) {
+        setStatus("Category already exists.");
+        return;
+      }
+
+      state.budgets[normalized] = { limit: limit || 100, spent: 0 };
+      newCategoryNameEl.value = "";
+      newCategoryLimitEl.value = "";
+      saveState();
+      renderBudgets();
+      setStatus(`Added category ${categoryLabel(normalized)} with ${money(state.budgets[normalized].limit)} limit.`);
+    });
+
+    budgetListEl.addEventListener("change", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (target.dataset.role !== "limit-input") return;
+
+      const category = target.dataset.category;
+      if (!category || !state.budgets[category]) return;
+
+      state.budgets[category].limit = toAmount(target.value || 0);
+      saveState();
+      renderBudgets();
+      setStatus(`Updated ${categoryLabel(category)} limit.`);
+    });
+
+    budgetListEl.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      if (target.dataset.role !== "remove-category") return;
+
+      const category = target.dataset.category;
+      if (!category || !state.budgets[category]) return;
+
+      delete state.budgets[category];
+      saveState();
+      renderBudgets();
+      setStatus(`Removed category ${categoryLabel(category)}.`);
+    });
+
+    resetSpentBtn.addEventListener("click", () => {
+      Object.keys(state.budgets).forEach((cat) => {
+        state.budgets[cat].spent = 0;
+      });
+      saveState();
+      renderBudgets();
+      setStatus("Reset all spent totals to zero.");
+    });
+
+    seedDemoBtn.addEventListener("click", () => {
+      state.budgets.groceries = { limit: 350, spent: 210 };
+      state.budgets.transport = { limit: 180, spent: 125 };
+      state.budgets.entertainment = { limit: 150, spent: 142 };
+      state.budgets.software = { limit: 100, spent: 40 };
+      state.budgets.other = { limit: 100, spent: 22 };
+      saveState();
+      renderBudgets();
+      setStatus("Loaded demo budget values.");
+    });
+
+    ["dragenter", "dragover"].forEach((evt) => {
+      dropzone.addEventListener(evt, (event) => {
+        event.preventDefault();
+        dropzone.classList.add("drag");
+      });
+    });
+
+    ["dragleave", "drop"].forEach((evt) => {
+      dropzone.addEventListener(evt, (event) => {
+        event.preventDefault();
+        dropzone.classList.remove("drag");
+      });
+    });
+
+    dropzone.addEventListener("drop", (event) => {
+      const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
+      if (!file) return;
+
+      const transfer = new DataTransfer();
+      transfer.items.add(file);
+      fileInput.files = transfer.files;
+      onFileChosen(file);
+    });
+
+    // Initialize UI
+    periodSelect.value = state.period;
+    renderBudgets();
+    setStatus(API_URL ? "API connected. Upload a receipt to start." : "Demo mode active. Add API_URL when backend is ready.");
+  </script>
+</body>
+</html>

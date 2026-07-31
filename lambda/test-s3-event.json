@@ -1,0 +1,10 @@
+{
+  "Records": [
+    {
+      "s3": {
+        "bucket": { "name": "budgetsnap-demo-bucket" },
+        "object": { "key": "sample-receipts/receipt_transport_02.png" }
+      }
+    }
+  ]
+}

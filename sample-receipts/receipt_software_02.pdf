@@ -1,0 +1,65 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 711 >>
+stream
+BT
+/F1 11 Tf
+50 790 Td
+15 TL
+(PIXELFLOW SOFTWARE LLC) Tj
+T*
+(244 Mission St, San Francisco, CA 94105) Tj
+T*
+(Invoice/Receipt #: PFS-319745) Tj
+T*
+(Date: 2026-07-28) Tj
+T*
+(--------------------------------------------------) Tj
+T*
+(Pro Plan \\(Monthly\\)                        $  29.00) Tj
+T*
+(Automation Add-on                         $   9.00) Tj
+T*
+(Extra Project Seats                       $   6.00) Tj
+T*
+(--------------------------------------------------) Tj
+T*
+(Subtotal                                  $  44.00) Tj
+T*
+(Tax                                       $   3.74) Tj
+T*
+(TOTAL                                     $  47.74) Tj
+T*
+(Payment: Card ending 1557) Tj
+T*
+(Billed to: Alex R.) Tj
+T*
+ET
+
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001003 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1071
+%%EOF

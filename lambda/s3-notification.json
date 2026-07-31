@@ -1,0 +1,9 @@
+{
+  "LambdaFunctionConfigurations": [
+    {
+      "Id": "budgetsnap-upload-trigger",
+      "LambdaFunctionArn": "arn:aws:lambda:<region>:<account-id>:function:<processor-function-name>",
+      "Events": ["s3:ObjectCreated:*"]
+    }
+  ]
+}
