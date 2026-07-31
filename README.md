@@ -2,11 +2,6 @@
 
 BudgetSnap is a lightweight receipt-to-budget demo built for AWS serverless services. It lets a user upload a receipt image or PDF, extracts key fields, stores the expense, and checks the result against a category budget.
 
-This repository is sanitized for public reuse:
-
-- No AWS credentials are included.
-- No screenshots or video assets are included in version control.
-- Deployment-specific bucket names, ARNs, and API URLs have been replaced with placeholders.
 
 ## What's Included
 
