@@ -90,32 +90,7 @@ To test the Bedrock extraction flow locally:
 python bedrock_quickstart.py --file sample-receipts/receipt_transport_02.png --mock-on-throttle
 ```
 
-## Suggested Public Repo Contents
 
-Keep these in the repo:
-
-- frontend source
-- Lambda source
-- seed data
-- deployment templates
-- setup documentation
-
-Do not commit:
-
-- AWS credentials
-- `.venv`
-- built zip packages
-- screenshots
-- videos
-- generated outputs
-
-## GitHub Push
-
-After reviewing the files, run:
-
-```powershell
-git init
-git add .
 git commit -m "Initial public BudgetSnap repo"
 git branch -M main
 git remote add origin https://github.com/limanindou/BudgetSnap.git
