@@ -124,10 +124,3 @@ python bedrock_quickstart.py --file sample-receipts/receipt_transport_02.png --m
 - [dynamodb-seed](dynamodb-seed): sample data and seed helpers
 - [sample-receipts](sample-receipts): test receipts for demos
 
-## Reuse Notes
-
-This repository is intended to be reusable:
-
-- replace placeholders in template policy files if you deploy manually
-- do not commit AWS credentials or account-specific secrets
-- generated screenshots, videos, build outputs, and zip packages are ignored
