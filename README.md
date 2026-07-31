@@ -89,8 +89,3 @@ To test the Bedrock extraction flow locally:
 ```powershell
 python bedrock_quickstart.py --file sample-receipts/receipt_transport_02.png --mock-on-throttle
 ```
-
-git branch -M main
-git remote add origin https://github.com/limanindou/BudgetSnap.git
-git push -u origin main
-```
